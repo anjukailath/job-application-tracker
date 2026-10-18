@@ -1,58 +1,327 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# JobApplicationTracker – Job Application & Interview Tracker
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+JobTrack is a web application built using **PHP, Laravel, MySQL, Blade and Bootstrap 5** to help users organise and manage their job applications throughout the recruitment process.
 
-## About Laravel
+This project demonstrates practical Laravel development skills, including MVC architecture, user authentication, database relationships, form validation and CRUD operations.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. User Authentication
+- User registration with name, email and password.
+- Secure login and logout functionality.
+- Password hashing using Laravel's built-in hashing functionality.
+- Session management and regeneration after authentication.
+- Protected routes using Laravel's authentication middleware.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Job Application Management (CRUD)
+Authenticated users can:
+- **Create** new job applications.
+- **View** their saved applications and application details.
+- **Edit** existing applications, including updating their status.
+- **Delete** applications with a confirmation prompt.
 
-## Learning Laravel
+Each application can contain:
+- Company name
+- Job title
+- Location
+- Job advertisement URL
+- Application date
+- Application status
+- Salary
+- Additional notes
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Supported application statuses include:
+`Saved`, `Applied`, `Assessment`, `Interview`, `Offer`, `Rejected` and `Withdrawn`.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 3. Application Listing
+- Display job applications in a responsive Bootstrap table.
+- View individual application details.
+- Navigate to edit and delete actions.
+- Search and status-filter controls implemented in the application interface.
+- Pagination configured to display 10 applications per page.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### 4. Data Validation and Security
+- Server-side form validation using Laravel.
+- CSRF protection for form submissions.
+- Authentication middleware to restrict unauthorised access.
+- User-specific database queries to protect application ownership.
+- Laravel Eloquent ORM for database interactions.
 
-## Agentic Development
+### 5. User Interface
+- Responsive pages using Bootstrap 5.
+- Shared Blade layout for consistent navigation and styling.
+- Reusable form components for creating and editing applications.
+- Validation error messages and success notifications.
+- Navigation between dashboard and application management pages.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Technology Stack
 
-```bash
-composer require laravel/boost --dev
+| Component | Technology |
+|---|---|
+| Backend | PHP |
+| Framework | Laravel |
+| Database | MySQL / MariaDB |
+| ORM | Laravel Eloquent |
+| Frontend | HTML, Blade Templates, Bootstrap 5 |
+| Package Management | Composer, npm |
+| Development Environment | Visual Studio Code |
+| Local Server | Laravel Development Server |
+| Version Control | Git |
 
-php artisan boost:install
+## Project Structure
+
+```text
+job-tracker/
+├── app/
+│   ├── Http/
+│   │   └── Controllers/
+│   │       ├── AuthController.php
+│   │       └── JobApplicationController.php
+│   └── Models/
+│       ├── User.php
+│       ├── JobApplication.php
+│       └── Interview.php
+│
+├── database/
+│   └── migrations/
+│       ├── create_users_table.php
+│       ├── create_job_applications_table.php
+│       └── create_interviews_table.php
+│
+├── resources/
+│   └── views/
+│       ├── auth/
+│       │   ├── login.blade.php
+│       │   └── register.blade.php
+│       ├── applications/
+│       │   ├── index.blade.php
+│       │   ├── create.blade.php
+│       │   ├── edit.blade.php
+│       │   ├── show.blade.php
+│       │   └── _form.blade.php
+│       ├── layouts/
+│       │   └── app.blade.php
+│       └── dashboard.blade.php
+│
+├── routes/
+│   └── web.php
+│
+├── .env.example
+├── .gitignore
+├── composer.json
+├── package.json
+└── README.md
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+*Note: Migration filenames contain timestamps generated by Laravel.*
 
-## Contributing
+## Database Design
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The application uses three main database tables.
 
-## Code of Conduct
+**users**
+- Stores registered user information.
+- Each user can have multiple job applications.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+**job_applications**
+- Stores job application details.
+- Connected to the users table using `user_id`.
+- Each application can have multiple interviews.
 
-## Security Vulnerabilities
+**interviews**
+- Stores interview-related information.
+- Connected to job applications using `job_application_id`.
+- Database structure and Eloquent relationships are implemented; interview scheduling functionality is planned for a later stage.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Relationships
 
-## License
+```text
+User
+  │
+  └── hasMany → JobApplication
+                    │
+                    └── hasMany → Interview
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Laravel Eloquent relationships are used to manage related records.
+
+## Installation and Setup
+
+### Prerequisites
+
+Ensure the following are installed:
+
+- PHP (compatible with the installed Laravel version)
+- Composer
+- MySQL / MariaDB
+- Node.js and npm
+- Git
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/anjukailath/job-application-tracker.git
+cd job-application-tracker
+```
+
+Replace `anjukailath` with your GitHub username.
+
+### 2. Install PHP Dependencies
+
+```bash
+composer install
+```
+
+### 3. Install Frontend Dependencies
+
+```bash
+npm install
+npm run build
+```
+
+### 4. Configure Environment
+
+Create a local environment file:
+
+```bash
+cp .env.example .env
+```
+
+On Windows PowerShell, use:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Update the database configuration in `.env`:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=job_application_tracker
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Use your own MySQL credentials where applicable.
+
+### 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Create Database
+
+Create a MySQL database named:
+
+```sql
+CREATE DATABASE job_application_tracker;
+```
+
+### 7. Run Database Migrations
+
+```bash
+php artisan migrate
+```
+
+### 8. Start the Application
+
+```bash
+php artisan serve
+```
+
+Open:
+
+http://127.0.0.1:8000
+
+Register a user account to begin managing job applications.
+
+## Available Routes
+
+### Authentication
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/register` | Registration page |
+| POST | `/register` | Register a new user |
+| GET | `/login` | Login page |
+| POST | `/login` | Authenticate user |
+| POST | `/logout` | Log out |
+| GET | `/dashboard` | Protected dashboard |
+
+### Job Applications
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/applications` | List applications |
+| GET | `/applications/create` | Create application form |
+| POST | `/applications` | Save application |
+| GET | `/applications/{id}` | View application |
+| GET | `/applications/{id}/edit` | Edit application form |
+| PUT/PATCH | `/applications/{id}` | Update application |
+| DELETE | `/applications/{id}` | Delete application |
+
+Application management routes require authentication.
+
+## Development Progress
+
+| Stage | Description | Status |
+|---|---|---|
+| Stage 1 | Development environment setup | Completed |
+| Stage 2 | Laravel project setup and configuration | Completed |
+| Stage 3 | Database models, migrations and relationships | Completed |
+| Stage 4 | Registration, login and logout | Completed |
+| Stage 5 | Job application CRUD implementation | Completed |
+| Stage 5 | Create, view, edit and delete testing | Completed |
+| Stage 5 | Search, filter and database verification | Pending final testing |
+| Stage 6 | Interview scheduling | Planned |
+| Stage 7 | Dashboard statistics and upcoming interviews | Planned |
+| Stage 8 | Final testing and portfolio preparation | Planned |
+
+## Testing Completed
+
+The following core workflows have been tested manually:
+
+- User registration and login.
+- User logout and protected-route access.
+- Creating a new job application.
+- Viewing saved applications.
+- Editing existing applications and updating their status.
+- Deleting applications.
+
+Additional search, filtering and end-to-end security testing will be finalised in subsequent development stages.
+
+## Planned Enhancements
+
+- Interview scheduling linked to job applications.
+- Dedicated interview management interface.
+- Dashboard with application statistics.
+- Upcoming interview tracking.
+- Enhanced search and status filtering.
+- Automated feature tests.
+- Improved UI styling and user experience.
+- Deployment to a hosting environment.
+
+## Security Notes
+
+- Environment configuration is stored in `.env`, which is excluded from Git version control.
+- Dependencies in `node_modules` are excluded from the repository.
+- Passwords are stored using secure hashing.
+- Application routes are protected using authentication middleware.
+- Job application queries are scoped to the authenticated user.
+
+The application is currently intended for local development and portfolio demonstration, rather than production use.
+
+## Project Status
+
+**Current development milestone: Stage 5 – Core Job Application CRUD Completed**
+
+The application currently supports secure user authentication and job application management.
+
+The next development milestone is implementing interview scheduling.
+
+## Author
+
+Developed as a PHP Laravel portfolio project to demonstrate full-stack web development, database integration, MVC architecture and secure CRUD operations.
